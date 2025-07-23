@@ -82,3 +82,25 @@ stopAll
 ```bash
 docker-compose stop
 ```
+---
+
+## TO-DO List
+### 1일차 (4H)
+- 프로젝트 인프라 환경 구성
+- 기존 Docker PreLab 팀 프로젝트 진행했던 내용과 동일하게 기능 구현
+- Kafka Producer, Kafka Consumer, Spark Processor 구현
+
+### 2일차 (4H)
+- `fms_producer`, `fms_consumer.py`, `fms processor.py` 로직 고도화 및 정제
+- `manage_kafka.sh` 필요 없는 토픽 제거 및 Slack 알람용 토픽 추가
+- `fms_producer.py` 에서 Slack 알람용 Topic 전송 로직 구현
+- Slack 알람용 Topic 수신하여 알람 발송하는 `slack_consumer.py` 구현
+- Airflow DAG & Spark Batch Job 사용하여 데이터 집계 구현
+
+### 3일차 (4H)
+- Prometheus & Grafana 사용하여 실시간 모니터링 및 집계 데이터 Dashboard 등 구현
+
+### 4일차 (4H)
+- 각 폴더들에 대한 `README.md` 파일 생성
+- 프로젝트 `README.md` 파일에 전체 아키텍쳐 Diagram 추가 및 실행 방법 업데이트
+- 결과 보고 PPT 작성
