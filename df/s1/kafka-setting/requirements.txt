@@ -1,0 +1,21 @@
+# Kafka 스트리밍을 위한 Python 패키지
+
+# Kafka 클라이언트
+confluent-kafka>=2.3.0
+
+# HTTP 요청
+requests>=2.31.0
+
+# PySpark (Spark Streaming용)
+pyspark>=3.4.0
+
+# 데이터 처리
+pandas>=2.1.0
+numpy>=1.24.0
+
+# 유틸리티
+python-dateutil>=2.8.0
+
+psutil
+
+pyarrow

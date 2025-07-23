@@ -1,2 +1,84 @@
 # bigdata-personal
-Big Data Docker Personal Assignments
+> ABC 전문가 과정 - Data Track (Advanced) : Docker 개인 과제
+
+## 1. Project Clone
+```bash
+git clone https://github.com/roats/bigdata-personal.git
+```
+---
+
+## 2. Docker Compose 실행 및 i1 컨테이너 접속
+```bash
+cd bigdata-personal
+docker-compose up --build -d
+docker exec -it i1 bash
+```
+---
+
+## 3. Ansible 사용하여 Hadoop, Spark, Kafka 설치 및 Hadoop 실행 (i1에서 실행)
+```bash
+cd /df
+wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
+wget https://archive.apache.org/dist/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz
+
+ansible-playbook --flush-cache -i /df/ansible-hadoop/hosts /df/ansible-hadoop/hadoop_install.yml
+ansible-playbook --flush-cache -i /df/ansible-spark/hosts /df/ansible-spark/spark_install.yml -e ansible_python_interpreter=/usr/bin/python3.12
+ansible-playbook --flush-cache -i /df/ansible-kafka/hosts /df/ansible-kafka/kafka_install.yml -e ansible_python_interpreter=/usr/bin/python3.12
+source /etc/bashrc
+
+startAll
+```
+---
+
+## 4. Spark, Kafka 실행 및 토픽 생성 (s1에서 실행)
+```bash
+$SPARK_HOME/sbin/start-all.sh
+cd /df/kafka-setting
+pip install -r requirements.txt
+bash manage_kafka.sh start
+bash manage_topics.sh create
+bash manage_topics.sh list
+jps
+```
+---
+
+## 5. Producer 실행 (i1에서 실행)
+```bash
+tmux new-session -d -s producer 'python3 /df/kafka-producer/fms_producer.py'
+```
+---
+
+## 6. Consumer, Processor 실행 (s1에서 실행)
+```bash
+tmux new-session -d -s consumer 'python3 /df/kafka-consumer/fms_consumer.py'
+tmux new-session -d -s processor 'spark-submit /df/spark-processor/fms_processor.py'
+```
+---
+
+## 7. Spark 처리 결과 확인 (s1에서 실행)
+```bash
+hdfs dfs -ls -R /fms/
+spark-submit /df/spark-processor/fms_processing_result.py
+```
+---
+
+## 8. Processor, Consumer, Kafka, Spark 종료 (s1에서 실행)
+```bash
+tmux kill-session -t processor
+tmux kill-session -t consumer
+bash /df/kafka-setting/manage_kafka.sh stop
+$SPARK_HOME/sbin/stop-all.sh
+```
+---
+
+## 9. Producer, Hadoop 종료 (i1에서 실행)
+```bash
+tmux kill-session -t producer
+stopAll
+```
+---
+
+## 10. Docker Compose 종료
+```bash
+docker-compose stop
+```
