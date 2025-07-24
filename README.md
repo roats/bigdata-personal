@@ -33,11 +33,10 @@ startAll
 ## 4. Spark, Kafka 실행 및 토픽 생성 (s1에서 실행)
 ```bash
 $SPARK_HOME/sbin/start-all.sh
-cd /df/kafka-setting
-pip install -r requirements.txt
-bash manage_kafka.sh start
-bash manage_topics.sh create
-bash manage_topics.sh list
+pip install -r /df/kafka-setting/requirements.txt
+bash /df/kafka-setting/manage_kafka.sh start
+bash /df/kafka-setting/manage_topics.sh create
+bash /df/kafka-setting/manage_topics.sh list
 jps
 ```
 ---
@@ -48,22 +47,31 @@ tmux new-session -d -s producer 'python3 /df/kafka-producer/fms_producer.py'
 ```
 ---
 
-## 6. Consumer, Processor 실행 (s1에서 실행)
+## 6. Slack WebHook URL 환경 변수 등록 (s1에서 실행)
 ```bash
-tmux new-session -d -s consumer 'python3 /df/kafka-consumer/fms_consumer.py'
-tmux new-session -d -s processor 'spark-submit /df/spark-processor/fms_processor.py'
+echo 'export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXXXX/XXXXX/XXXXXXXXXX"' >> /etc/bashrc
+source /etc/bashrc
 ```
 ---
 
-## 7. Spark 처리 결과 확인 (s1에서 실행)
+## 7. Consumer, Processor 실행 (s1에서 실행)
+```bash
+tmux new-session -d -s consumer 'bash -c "source /etc/bashrc && python3 /df/kafka-consumer/fms_consumer.py"'
+tmux new-session -d -s processor 'spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.4 /df/spark-processor/fms_processor.py'
+tmux new-session -d -s alert_consumer 'bash -c "source /etc/bashrc && python3 /df/kafka-consumer/fms_alert_consumer.py"'
+```
+---
+
+## 8. Spark 처리 결과 확인 (s1에서 실행)
 ```bash
 hdfs dfs -ls -R /fms/
 spark-submit /df/spark-processor/fms_processing_result.py
 ```
 ---
 
-## 8. Processor, Consumer, Kafka, Spark 종료 (s1에서 실행)
+## 9. Processor, Consumer, Kafka, Spark 종료 (s1에서 실행)
 ```bash
+tmux kill-session -t alert_consumer
 tmux kill-session -t processor
 tmux kill-session -t consumer
 bash /df/kafka-setting/manage_kafka.sh stop
@@ -71,14 +79,14 @@ $SPARK_HOME/sbin/stop-all.sh
 ```
 ---
 
-## 9. Producer, Hadoop 종료 (i1에서 실행)
+## 10. Producer, Hadoop 종료 (i1에서 실행)
 ```bash
 tmux kill-session -t producer
 stopAll
 ```
 ---
 
-## 10. Docker Compose 종료
+## 11. Docker Compose 종료
 ```bash
 docker-compose stop
 ```
@@ -93,11 +101,12 @@ docker-compose stop
 ### 2일차 (4H)
 - `fms_producer`, `fms_consumer.py`, `fms processor.py` 로직 고도화 및 정제
 - `manage_kafka.sh` 필요 없는 토픽 제거 및 Slack 알람용 토픽 추가
-- `fms_producer.py` 에서 Slack 알람용 Topic 전송 로직 구현
-- Slack 알람용 Topic 수신하여 알람 발송하는 `slack_consumer.py` 구현
-- Airflow DAG & Spark Batch Job 사용하여 데이터 집계 구현
+- `fms_processor.py` 에서 Alert 데이터 Slack 알람용 Topic 전송 로직 구현
+- Slack 알람용 Topic 수신하여 알람 발송하는 `fms_alert_consumer.py` 구현
+- `fms_consumer.py` 수신 없으면 Slack 알람 발송하도록 개선
 
 ### 3일차 (4H)
+- Airflow DAG & Spark Batch Job 사용하여 데이터 집계 구현
 - Prometheus & Grafana 사용하여 실시간 모니터링 및 집계 데이터 Dashboard 등 구현
 
 ### 4일차 (4H)

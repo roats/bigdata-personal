@@ -14,6 +14,7 @@ import pyarrow.parquet as pq
 import subprocess
 from collections import defaultdict
 import time
+import requests
 
 # Kafka 설정
 BROKER = "s1:9092,s2:9092,s3:9092"
@@ -38,6 +39,9 @@ class FMSDataConsumer:
         })
         self.batch_buffer = defaultdict(list)
         self.batch_interval = 5  # 5초마다 묶어서 저장
+        self.last_receive_time = time.time()
+        self.alert_interval = 30  # 30초 이상 수신 없을 경우 슬랙 알림
+        self.last_alert_sent = 0  # 중복 알림 방지
 
     def validate_data(self, data):
         """데이터 필수 유효성 검사"""
@@ -93,25 +97,32 @@ class FMSDataConsumer:
         try:
             while True:
                 msgs = self.consumer.consume(num_messages=100, timeout=1.0)
-                if not msgs:
-                    continue
-                for msg in msgs:
-                    if msg is None:
-                        continue
-                    elif msg.error():
-                        if msg.error().code() != KafkaError._PARTITION_EOF:
-                            logger.error(f"Consumer error: {msg.error()}")
-                            break
-                    else:
-                        data = json.loads(msg.value().decode('utf-8'))
-                        if self.validate_data(data):
-                            ts_key = datetime.fromisoformat(data['time']).strftime('%Y%m%d%H%M%S')
-                            self.batch_buffer[ts_key].append(data)
+                if msgs:
+                    for msg in msgs:
+                        if msg is None:
+                            continue
+                        elif msg.error():
+                            if msg.error().code() != KafkaError._PARTITION_EOF:
+                                logger.error(f"Consumer error: {msg.error()}")
+                                break
+                        else:
+                            data = json.loads(msg.value().decode('utf-8'))
+                            self.last_receive_time = time.time()
+                            if self.validate_data(data):
+                                ts_key = datetime.fromisoformat(data['time']).strftime('%Y%m%d%H%M%S')
+                                self.batch_buffer[ts_key].append(data)
 
                 now = time.time()
                 if now - last_flush_time >= self.batch_interval:
                     self.flush_batches()
                     last_flush_time = now
+
+                # Kafka로부터 너무 오랫동안 메시지를 못 받았을 경우 Slack 알림
+                now = time.time()
+                if now - self.last_receive_time > self.alert_interval:
+                    if now - self.last_alert_sent > self.alert_interval:
+                        self.send_slack_alert("⚠️ FMS Kafka 토픽에서 30초 이상 데이터 수신 없음")
+                        self.last_alert_sent = now
 
         except KeyboardInterrupt:
             logger.info("사용자에 의해 중단됨")
@@ -142,6 +153,20 @@ class FMSDataConsumer:
             self.batch_buffer.clear()
         except Exception as e:
             logger.error(f"HDFS 저장 실패: {e}")
+
+    def send_slack_alert(self, message):
+        webhook_url = os.environ.get("SLACK_WEBHOOK_URL")
+        if not webhook_url:
+            logger.warning("Slack Webhook URL이 설정되어 있지 않음")
+            return
+        payload = {
+            "text": message
+        }
+        try:
+            requests.post(webhook_url, json=payload)
+            logger.info("📢 Slack 알림 전송됨")
+        except Exception as e:
+            logger.error(f"Slack 알림 전송 실패: {e}")
 
 if __name__ == "__main__":
     consumer = FMSDataConsumer()

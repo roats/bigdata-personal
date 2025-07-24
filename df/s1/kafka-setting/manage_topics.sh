@@ -14,26 +14,34 @@ create_topics() {
         --config compression.type=gzip \
         --bootstrap-server $BROKERS
 
-    # 기본 테스트 토픽들
-    kafka-topics.sh --create --topic test-topic --bootstrap-server $BROKERS
-    kafka-topics.sh --create --topic input-topic --bootstrap-server $BROKERS
-    kafka-topics.sh --create --topic filtered-topic --bootstrap-server $BROKERS
-
-    # 고가용성 테스트용 토픽
-    kafka-topics.sh --create --topic replicated-topic \
+    # FMS 알림 데이터용 토픽
+    kafka-topics.sh --create --topic fms-alert-data \
         --partitions 3 --replication-factor 2 \
         --if-not-exists \
         --config retention.ms=604800000 \
         --config compression.type=gzip \
         --bootstrap-server $BROKERS
 
+    # 기본 테스트 토픽들
+    # kafka-topics.sh --create --topic test-topic --bootstrap-server $BROKERS
+    # kafka-topics.sh --create --topic input-topic --bootstrap-server $BROKERS
+    # kafka-topics.sh --create --topic filtered-topic --bootstrap-server $BROKERS
+
+    # 고가용성 테스트용 토픽
+    # kafka-topics.sh --create --topic replicated-topic \
+    #     --partitions 3 --replication-factor 2 \
+    #     --if-not-exists \
+    #     --config retention.ms=604800000 \
+    #     --config compression.type=gzip \
+    #     --bootstrap-server $BROKERS
+
     # 센서 데이터용 토픽
-    kafka-topics.sh --create --topic sensor-data \
-        --partitions 5 --replication-factor 2 \
-        --if-not-exists \
-        --config retention.ms=604800000 \
-        --config compression.type=gzip \
-        --bootstrap-server $BROKERS
+    # kafka-topics.sh --create --topic sensor-data \
+    #     --partitions 5 --replication-factor 2 \
+    #     --if-not-exists \
+    #     --config retention.ms=604800000 \
+    #     --config compression.type=gzip \
+    #     --bootstrap-server $BROKERS
 
     echo "Topics created successfully"
 }
