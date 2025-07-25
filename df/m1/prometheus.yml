@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: 'node-exporters'
+    static_configs:
+      - targets: ['i1:9100', 's1:9100', 's2:9100', 's3:9100']
+  - job_name: 'fms_exporter'
+    static_configs:
+      - targets: ['s1:8000']

@@ -1,0 +1,7 @@
+[
+{"DeviceId":1,"sensor1":83.06,"sensor2":94.47,"sensor3":83.17,"motor1":1265,"motor2":917,"motor3":1063,"isFail":false,"status":"NORMAL","time":"2025-07-25T16:50:06Z"},
+{"DeviceId":4,"sensor1":81.2,"sensor2":90.61,"sensor3":78.37,"motor1":1349,"motor2":845,"motor3":982,"isFail":false,"status":"NORMAL","time":"2025-07-25T16:50:06Z"},
+{"DeviceId":3,"sensor1":82.09,"sensor2":96.55,"sensor3":81.74,"motor1":1160,"motor2":832,"motor3":881,"isFail":false,"status":"NORMAL","time":"2025-07-25T16:50:06Z"},
+{"DeviceId":5,"sensor1":82.62,"sensor2":90.41,"sensor3":71.03,"motor1":1280,"motor2":839,"motor3":1184,"isFail":false,"status":"NORMAL","time":"2025-07-25T16:50:06Z"},
+{"DeviceId":2,"sensor1":77.54,"sensor2":86.08,"sensor3":72.03,"motor1":1212,"motor2":767,"motor3":1034,"isFail":false,"status":"NORMAL","time":"2025-07-25T16:50:06Z"}
+]

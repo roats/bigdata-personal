@@ -30,7 +30,13 @@ startAll
 ```
 ---
 
-## 4. Spark, Kafka 실행 및 토픽 생성 (s1에서 실행)
+## 4. Producer 실행 (i1에서 실행)
+```bash
+tmux new-session -d -s producer 'python3 /df/kafka-producer/fms_producer.py'
+```
+---
+
+## 5. Spark, Kafka 실행 및 토픽 생성 (s1에서 실행)
 ```bash
 $SPARK_HOME/sbin/start-all.sh
 pip install -r /df/kafka-setting/requirements.txt
@@ -38,12 +44,6 @@ bash /df/kafka-setting/manage_kafka.sh start
 bash /df/kafka-setting/manage_topics.sh create
 bash /df/kafka-setting/manage_topics.sh list
 jps
-```
----
-
-## 5. Producer 실행 (i1에서 실행)
-```bash
-tmux new-session -d -s producer 'python3 /df/kafka-producer/fms_producer.py'
 ```
 ---
 
@@ -69,7 +69,16 @@ spark-submit /df/spark-processor/fms_processing_result.py
 ```
 ---
 
-## 9. Processor, Consumer, Kafka, Spark 종료 (s1에서 실행)
+## 9. Prometheus, Grafana Setting
+- Prometheus : http://localhost:9090/
+- Grafana : http://localhost:3000/
+
+- Grafana (admin/admin)
+- Connections > Data Sources > Add new data source > Prometheus > http://localhost:9090 입력 > Save & Test
+- DashBoards > Create Dashboard > Import a dashboard > `1860` (Node Exporter Full) Load > Prometheus > import
+---
+
+## 10. Processor, Consumer, Kafka, Spark 종료 (s1에서 실행)
 ```bash
 tmux kill-session -t alert_consumer
 tmux kill-session -t processor
@@ -79,14 +88,14 @@ $SPARK_HOME/sbin/stop-all.sh
 ```
 ---
 
-## 10. Producer, Hadoop 종료 (i1에서 실행)
+## 11. Producer, Hadoop 종료 (i1에서 실행)
 ```bash
 tmux kill-session -t producer
 stopAll
 ```
 ---
 
-## 11. Docker Compose 종료
+## 12. Docker Compose 종료
 ```bash
 docker-compose stop
 ```
@@ -106,10 +115,13 @@ docker-compose stop
 - `fms_consumer.py` 수신 없으면 Slack 알람 발송하도록 개선
 
 ### 3일차 (4H)
-- Airflow DAG & Spark Batch Job 사용하여 데이터 집계 구현
-- Prometheus & Grafana 사용하여 실시간 모니터링 및 집계 데이터 Dashboard 등 구현
+- Prometheus & Grafana 사용하여 시스템 실시간 모니터링 구현
 
 ### 4일차 (4H)
+- Grafana 사용하여 FMS Sensor Data DashBoard 생성
+- Airflow DAG 사용하여 워크플로우 자동화 구현
+
+### 5일차 (4H)
 - 각 폴더들에 대한 `README.md` 파일 생성
 - 프로젝트 `README.md` 파일에 전체 아키텍쳐 Diagram 추가 및 실행 방법 업데이트
 - 결과 보고 PPT 작성

@@ -138,6 +138,30 @@ def write_to_kafka(df, topic, checkpoint, name):
 
     return query
 
+def write_latest_to_single_json(df):
+    from pyspark.sql.functions import to_json, struct
+    import os
+
+    def batch_writer(batch_df, batch_id):
+        if batch_df.isEmpty():
+            return
+        json_data = batch_df.select(
+                "DeviceId","sensor1", "sensor2", "sensor3",
+                "motor1", "motor2", "motor3",
+                "sensor_avg", "motor_total", "isFail", "time"
+        ).orderBy("time").toJSON().collect()
+
+        json_path = "/df/exporter/latest_data.json"
+        with open(json_path, "w") as f:
+            f.write("[\n" + ",\n".join(json_data) + "\n]")
+
+    return df.writeStream \
+        .foreachBatch(batch_writer) \
+        .outputMode("append") \
+        .trigger(processingTime="10 seconds") \
+        .queryName("latest_json") \
+        .start()
+
 queries = []
 
 # HDFS 쿼리
@@ -169,6 +193,12 @@ try:
 
 except Exception as e:
     print("[ERROR] Kafka 쿼리 실패:", e)
+
+# Exporter
+try:
+    queries.append(write_latest_to_single_json(status_df))
+except Exception as e:
+    print("[ERROR] JSON Export 쿼리 실패:", e)
 
 # 모든 쿼리 종료 대기
 try:
