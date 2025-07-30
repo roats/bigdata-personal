@@ -1,0 +1,27 @@
+{
+  "1": {
+    "total_count": 56,
+    "error_count": 9,
+    "error_rate": 16.07
+  },
+  "5": {
+    "total_count": 56,
+    "error_count": 6,
+    "error_rate": 10.71
+  },
+  "4": {
+    "total_count": 57,
+    "error_count": 4,
+    "error_rate": 7.02
+  },
+  "3": {
+    "total_count": 56,
+    "error_count": 9,
+    "error_rate": 16.07
+  },
+  "2": {
+    "total_count": 56,
+    "error_count": 7,
+    "error_rate": 12.5
+  }
+}

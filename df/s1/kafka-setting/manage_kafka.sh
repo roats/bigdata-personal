@@ -7,7 +7,7 @@ start_kafka_cluster() {
     # s1에서 Zookeeper 시작
     echo "Starting Zookeeper on s1..."
     tmux new-session -d -s zookeeper 'zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties'
-    sleep 5
+    sleep 10
 
     # Kafka 브로커들 시작
     echo "Starting Kafka brokers..."

@@ -13,6 +13,8 @@ services:
     hostname: i1
     networks:
       - hnet
+    ports:
+      - "9000:8080"
     volumes:
       - ./df/i1:/df
     tty: true

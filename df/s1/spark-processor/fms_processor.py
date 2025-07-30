@@ -95,7 +95,7 @@ def write_query(df, base_path, checkpoint, name):
         .format("parquet") \
         .option("path", base_path) \
         .option("checkpointLocation", checkpoint) \
-        .partitionBy("year", "month", "day", "hour", "minute") \
+        .partitionBy("year", "month", "day", "hour") \
         .trigger(processingTime="10 seconds") \
         .start()
 

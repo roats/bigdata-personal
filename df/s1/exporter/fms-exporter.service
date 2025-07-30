@@ -1,0 +1,12 @@
+[Unit]
+Description=FMS Prometheus Exporter
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /df/exporter/exporter.py
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target
