@@ -1,27 +1,27 @@
 {
-  "1": {
-    "total_count": 56,
-    "error_count": 9,
-    "error_rate": 16.07
-  },
-  "5": {
-    "total_count": 56,
-    "error_count": 6,
-    "error_rate": 10.71
-  },
-  "4": {
-    "total_count": 57,
-    "error_count": 4,
-    "error_rate": 7.02
-  },
   "3": {
-    "total_count": 56,
-    "error_count": 9,
-    "error_rate": 16.07
+    "total_count": 360,
+    "error_count": 40,
+    "error_rate": 11.11
   },
   "2": {
-    "total_count": 56,
-    "error_count": 7,
-    "error_rate": 12.5
+    "total_count": 360,
+    "error_count": 51,
+    "error_rate": 14.17
+  },
+  "1": {
+    "total_count": 360,
+    "error_count": 57,
+    "error_rate": 15.83
+  },
+  "4": {
+    "total_count": 360,
+    "error_count": 42,
+    "error_rate": 11.67
+  },
+  "5": {
+    "total_count": 360,
+    "error_count": 65,
+    "error_rate": 18.06
   }
 }

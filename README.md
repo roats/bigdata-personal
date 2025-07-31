@@ -16,8 +16,10 @@ git clone https://github.com/roats/bigdata-personal.git
 ## 2. Docker Compose 실행 및 i1 컨테이너 접속
 ```bash
 cd bigdata-personal
+
 docker-compose up --build -d
 docker exec -it i1 bash
+
 /root/setup-ssh.sh
 ```
 ---
@@ -25,12 +27,14 @@ docker exec -it i1 bash
 ## 3. Ansible 사용하여 Hadoop, Spark, Kafka 설치 및 Hadoop 실행 (i1에서 실행)
 ```bash
 cd /df
+
 wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
 wget https://archive.apache.org/dist/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz
 
 ansible-playbook --flush-cache -i /df/ansible-hadoop/hosts /df/ansible-hadoop/hadoop_install.yml
 ansible-playbook --flush-cache -i /df/ansible-spark/hosts /df/ansible-spark/spark_install.yml -e ansible_python_interpreter=/usr/bin/python3.12
 ansible-playbook --flush-cache -i /df/ansible-kafka/hosts /df/ansible-kafka/kafka_install.yml -e ansible_python_interpreter=/usr/bin/python3.12
+
 source /etc/bashrc
 
 startAll
@@ -46,11 +50,14 @@ tmux new-session -d -s producer 'python3 /df/kafka-producer/fms_producer.py'
 ## 5. Spark, Kafka 실행 및 토픽 생성 (s1에서 실행)
 ```bash
 $SPARK_HOME/sbin/start-all.sh
+
 pip install -r /df/kafka-setting/requirements.txt
 pip install --upgrade pip setuptools packaging
+
 bash /df/kafka-setting/manage_kafka.sh start
 bash /df/kafka-setting/manage_topics.sh create
 bash /df/kafka-setting/manage_topics.sh list
+
 jps
 ```
 ---
@@ -112,7 +119,9 @@ cat ~/airflow/simple_auth_manager_passwords.json.generated
 tmux kill-session -t alert_consumer
 tmux kill-session -t processor
 tmux kill-session -t consumer
+
 bash /df/kafka-setting/manage_kafka.sh stop
+
 $SPARK_HOME/sbin/stop-all.sh
 ```
 ---
@@ -121,6 +130,7 @@ $SPARK_HOME/sbin/stop-all.sh
 ```bash
 tmux kill-session -t airflow
 tmux kill-session -t producer
+
 stopAll
 ```
 ---

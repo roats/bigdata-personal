@@ -1,12 +1,21 @@
 #!/bin/bash
 # Kafka 클러스터 관리 스크립트
 
+wait_for_zookeeper() {
+  echo "Waiting for ZooKeeper..."
+  until nc -z localhost 2181; do
+    sleep 1
+  done
+  echo "ZooKeeper is ready."
+}
+
 start_kafka_cluster() {
     echo "Starting Kafka cluster..."
 
     # s1에서 Zookeeper 시작
     echo "Starting Zookeeper on s1..."
     tmux new-session -d -s zookeeper 'zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties'
+    wait_for_zookeeper
     sleep 10
 
     # Kafka 브로커들 시작

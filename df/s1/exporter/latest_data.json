@@ -1,7 +1,12 @@
 [
-{"DeviceId":2,"sensor1":85.4,"sensor2":93.81,"sensor3":74.62,"motor1":1320,"motor2":899,"motor3":1073,"sensor_avg":84.61,"motor_total":3292,"isFail":false,"time":"2025-07-30T16:29:03Z"},
-{"DeviceId":3,"sensor1":73.66,"sensor2":82.49,"sensor3":72.22,"motor1":1286,"motor2":539,"motor3":1197,"sensor_avg":76.12333333333332,"motor_total":3022,"isFail":false,"time":"2025-07-30T16:29:03Z"},
-{"DeviceId":1,"sensor1":84.02,"sensor2":-1.0,"sensor3":70.95,"motor1":1183,"motor2":925,"motor3":1165,"sensor_avg":51.32333333333333,"motor_total":3273,"isFail":false,"time":"2025-07-30T16:29:03Z"},
-{"DeviceId":5,"sensor1":84.07,"sensor2":92.65,"sensor3":86.7,"motor1":1147,"motor2":941,"motor3":1115,"sensor_avg":87.80666666666667,"motor_total":3203,"isFail":false,"time":"2025-07-30T16:29:03Z"},
-{"DeviceId":4,"sensor1":89.49,"sensor2":74.95,"sensor3":77.73,"motor1":1235,"motor2":831,"motor3":1238,"sensor_avg":80.72333333333334,"motor_total":3304,"isFail":false,"time":"2025-07-30T16:29:03Z"}
+{"DeviceId":2,"sensor1":74.25,"sensor2":87.2,"sensor3":72.03,"motor1":1172,"motor2":810,"motor3":1087,"sensor_avg":77.82666666666667,"motor_total":3069,"isFail":false,"time":"2025-07-31T16:42:18Z"},
+{"DeviceId":1,"sensor1":73.96,"sensor2":84.21,"sensor3":78.77,"motor1":1395,"motor2":843,"motor3":1034,"sensor_avg":78.98,"motor_total":3272,"isFail":false,"time":"2025-07-31T16:42:18Z"},
+{"DeviceId":3,"sensor1":71.22,"sensor2":94.06,"sensor3":67.35,"motor1":1224,"motor2":697,"motor3":1082,"sensor_avg":77.54333333333334,"motor_total":3003,"isFail":false,"time":"2025-07-31T16:42:18Z"},
+{"DeviceId":5,"sensor1":81.93,"sensor2":88.31,"sensor3":83.06,"motor1":1203,"motor2":728,"motor3":1039,"sensor_avg":84.43333333333334,"motor_total":2970,"isFail":false,"time":"2025-07-31T16:42:18Z"},
+{"DeviceId":4,"sensor1":80.85,"sensor2":96.31,"sensor3":82.52,"motor1":1026,"motor2":937,"motor3":1177,"sensor_avg":86.56,"motor_total":3140,"isFail":false,"time":"2025-07-31T16:42:18Z"},
+{"DeviceId":3,"sensor1":94.4,"sensor2":97.16,"sensor3":89.96,"motor1":1093,"motor2":547,"motor3":1159,"sensor_avg":93.83999999999999,"motor_total":2799,"isFail":false,"time":"2025-07-31T16:42:28Z"},
+{"DeviceId":1,"sensor1":83.37,"sensor2":93.68,"sensor3":77.31,"motor1":1373,"motor2":949,"motor3":1069,"sensor_avg":84.78666666666668,"motor_total":3391,"isFail":false,"time":"2025-07-31T16:42:28Z"},
+{"DeviceId":2,"sensor1":82.92,"sensor2":85.8,"sensor3":78.41,"motor1":1194,"motor2":954,"motor3":1240,"sensor_avg":82.37666666666667,"motor_total":3388,"isFail":false,"time":"2025-07-31T16:42:28Z"},
+{"DeviceId":5,"sensor1":80.05,"sensor2":83.67,"sensor3":69.69,"motor1":1457,"motor2":929,"motor3":1077,"sensor_avg":77.80333333333333,"motor_total":3463,"isFail":false,"time":"2025-07-31T16:42:28Z"},
+{"DeviceId":4,"sensor1":83.78,"sensor2":83.62,"sensor3":78.66,"motor1":1239,"motor2":986,"motor3":1165,"sensor_avg":82.02,"motor_total":3390,"isFail":false,"time":"2025-07-31T16:42:28Z"}
 ]
